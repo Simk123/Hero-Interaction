@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almanac — Body Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --blue: #1B8DC8;
+  --blue-dark: #156FA0;
+  --ink: #0F2D3D;
+  --orange: #E05A20;
+  --white: #FFFFFF;
+  --nav-bg: #145E87;
+}
+
+body {
+  background: #0D1F2D;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px 48px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── PHONE SHELL ── */
+.phone {
+  width: 390px;
+  min-height: 844px;
+  background: var(--blue);
+  border-radius: 48px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  padding: 14px 28px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 20;
+}
+.status-time {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.status-icons span {
+  font-size: 13px;
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+/* ── TAB STRIP ── */
+.tab-strip {
+  display: flex;
+  gap: 0;
+  padding: 16px 24px 0;
+  flex-shrink: 0;
+  z-index: 20;
+}
+.tab-pill {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  padding: 6px 14px;
+  border-radius: 99px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: all 0.15s;
+  user-select: none;
+}
+.tab-pill.active {
+  background: rgba(255,255,255,0.18);
+  color: var(--white);
+}
+.tab-pill:hover:not(.active) {
+  color: rgba(255,255,255,0.75);
+}
+
+/* ── FACT TEXT ── */
+.fact-text {
+  padding: 22px 28px 18px;
+  flex-shrink: 0;
+  z-index: 20;
+  position: relative;
+}
+.fact-copy {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 320px;
+}
+.fact-copy strong { font-weight: 700; }
+
+/* ── ANATOMY HERO ── */
+.anatomy-hero {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+}
+.anatomy-hero svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  background: var(--nav-bg);
+  padding: 16px 20px 28px;
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  z-index: 20;
+}
+.nav-btn {
+  flex: 1;
+  padding: 13px 0;
+  border-radius: 99px;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+  text-transform: uppercase;
+}
+.nav-btn.active {
+  background: var(--blue-dark);
+  color: var(--white);
+}
+.nav-btn:hover:not(.active) {
+  color: rgba(255,255,255,0.85);
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <span>●●●</span>
+      <span>WiFi</span>
+      <span>🔋</span>
+    </div>
+  </div>
+
+  <!-- LAYER TABS -->
+  <div class="tab-strip">
+    <div class="tab-pill active" onclick="setLayer(0)">Hormonal</div>
+    <div class="tab-pill" onclick="setLayer(1)">Physical</div>
+    <div class="tab-pill" onclick="setLayer(2)">Emotional</div>
+    <div class="tab-pill" onclick="setLayer(3)">Inputs</div>
+  </div>
+
+  <!-- FACT TEXT -->
+  <div class="fact-text">
+    <p class="fact-copy" id="factCopy">
+      <strong>80% of serotonin receptors</strong> in the brain are directly upregulated by estrogen — accounting for the mood lift in follicular phase.
+    </p>
+  </div>
+
+  <!-- ANATOMY HERO — full-bleed large SVG illustration -->
+  <div class="anatomy-hero" id="anatomyHero">
+
+    <!-- HORMONAL: uterus + ovaries, bold and large -->
+    <svg id="svgHormonal" viewBox="0 0 390 480" preserveAspectRatio="xMidYMax meet">
+      <!-- dark body fills — the structural silhouette -->
+      <!-- Large pelvis/body silhouette, dark ink, bleeds edges -->
+      <path d="M-20 480 L-20 220 C-20 180 10 140 50 120
+               C80 105 110 100 130 108
+               C150 116 165 130 175 148
+               L195 170
+               L215 148
+               C225 130 240 116 260 108
+               C280 100 310 105 340 120
+               C380 140 410 180 410 220
+               L410 480 Z"
+        fill="#0F2D3D"/>
+
+      <!-- leg bones / long bones descending -->
+      <rect x="130" y="310" width="52" height="200" rx="26" fill="#0F2D3D"/>
+      <rect x="208" y="310" width="52" height="200" rx="26" fill="#0F2D3D"/>
+
+      <!-- HIP SOCKETS — white circles (joint space) -->
+      <circle cx="143" cy="250" r="44" fill="white"/>
+      <circle cx="247" cy="250" r="44" fill="white"/>
+
+      <!-- OVARIES — large bold orange fills in joint circles -->
+      <!-- Left ovary complex -->
+      <ellipse cx="130" cy="240" rx="36" ry="28" fill="#E05A20"/>
+      <ellipse cx="155" cy="262" rx="28" ry="20" fill="#E05A20"/>
+      <ellipse cx="142" cy="248" rx="16" ry="13" fill="white"/>
+
+      <!-- Right ovary complex -->
+      <ellipse cx="260" cy="240" rx="36" ry="28" fill="#E05A20"/>
+      <ellipse cx="235" cy="262" rx="28" ry="20" fill="#E05A20"/>
+      <ellipse cx="248" cy="248" rx="16" ry="13" fill="white"/>
+
+      <!-- Uterus — central dark with orange interior -->
+      <path d="M168 160 C155 160 148 175 148 195 C148 220 158 240 175 248
+               L175 310 L215 310 L215 248 C232 240 242 220 242 195
+               C242 175 235 160 222 160 Z"
+        fill="#0F2D3D"/>
+      <path d="M178 172 C170 172 165 183 165 196 C165 212 172 228 182 234
+               L182 298 L208 298 L208 234 C218 228 225 212 225 196
+               C225 183 220 172 212 172 Z"
+        fill="#E05A20"/>
+      <!-- cervical canal -->
+      <rect x="189" y="270" width="12" height="34" rx="5" fill="white" opacity="0.4"/>
+
+      <!-- Fallopian tube arcs -->
+      <path d="M170 185 C150 165 120 168 100 180"
+        fill="none" stroke="#0F2D3D" stroke-width="5" stroke-linecap="round"/>
+      <path d="M220 185 C240 165 270 168 290 180"
+        fill="none" stroke="#0F2D3D" stroke-width="5" stroke-linecap="round"/>
+      <!-- fimbriae -->
+      <path d="M100 180 C92 172 84 175 80 167" fill="none" stroke="#0F2D3D" stroke-width="3" stroke-linecap="round"/>
+      <path d="M100 180 C95 169 88 171 83 162" fill="none" stroke="#0F2D3D" stroke-width="2" stroke-linecap="round"/>
+      <path d="M290 180 C298 172 306 175 310 167" fill="none" stroke="#0F2D3D" stroke-width="3" stroke-linecap="round"/>
+      <path d="M290 180 C295 169 302 171 307 162" fill="none" stroke="#0F2D3D" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- FSH signal dots descending from top -->
+      <circle cx="195" cy="20" r="5" fill="#0F2D3D" opacity="0.5"/>
+      <circle cx="195" cy="42" r="4" fill="#0F2D3D" opacity="0.4"/>
+      <circle cx="195" cy="62" r="3" fill="#0F2D3D" opacity="0.3"/>
+      <line x1="195" y1="68" x2="195" y2="155" stroke="#0F2D3D" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
+    </svg>
+
+    <!-- PHYSICAL: large knee joints, exactly like the screenshot -->
+    <svg id="svgPhysical" viewBox="0 0 390 480" preserveAspectRatio="xMidYMax meet" style="display:none">
+      <!-- Left leg bones — femur top, tibia below -->
+      <rect x="40" y="0" width="110" height="240" rx="55" fill="#0F2D3D"/>
+      <rect x="60" y="290" width="70" height="220" rx="35" fill="#0F2D3D"/>
+      <!-- ankle/foot bones left -->
+      <rect x="48" y="490" width="28" height="18" rx="8" fill="#0F2D3D"/>
+      <rect x="82" y="490" width="22" height="14" rx="7" fill="#0F2D3D"/>
+      <rect x="108" y="492" width="18" height="12" rx="6" fill="#0F2D3D"/>
+
+      <!-- Right leg bones — partial, bleeding off right edge -->
+      <rect x="240" y="0" width="120" height="260" rx="55" fill="#0F2D3D"/>
+      <rect x="258" y="298" width="80" height="200" rx="35" fill="#0F2D3D"/>
+
+      <!-- LEFT KNEE JOINT — large, centred left -->
+      <!-- Joint socket — white -->
+      <ellipse cx="95" cy="268" rx="74" ry="56" fill="white"/>
+      <!-- Femoral condyle — orange fills -->
+      <ellipse cx="70" cy="248" rx="52" ry="42" fill="#E05A20"/>
+      <ellipse cx="115" cy="278" rx="44" ry="36" fill="#E05A20"/>
+      <!-- cartilage highlight — white crescent -->
+      <ellipse cx="82" cy="258" rx="28" ry="22" fill="white"/>
+
+      <!-- RIGHT KNEE JOINT — partial, bleeding right edge -->
+      <!-- Joint socket white -->
+      <ellipse cx="310" cy="290" rx="80" ry="60" fill="white"/>
+      <!-- Orange fills -->
+      <ellipse cx="290" cy="268" rx="56" ry="46" fill="#E05A20"/>
+      <ellipse cx="340" cy="302" rx="52" ry="42" fill="#E05A20"/>
+      <!-- cartilage highlight -->
+      <ellipse cx="306" cy="278" rx="30" ry="24" fill="white"/>
+
+      <!-- patella -->
+      <ellipse cx="95" cy="256" rx="20" ry="16" fill="#0F2D3D" opacity="0.6"/>
+      <ellipse cx="310" cy="276" rx="22" ry="18" fill="#0F2D3D" opacity="0.6"/>
+
+      <!-- Estrogen protective label hint -->
+      <rect x="18" y="18" width="160" height="22" rx="4" fill="#0F2D3D" opacity="0.25"/>
+      <text x="98" y="33" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="white" letter-spacing="0.1em" opacity="0.7">E2 BONE-PROTECTIVE</text>
+    </svg>
+
+    <!-- EMOTIONAL: large brain hemispheres -->
+    <svg id="svgEmotional" viewBox="0 0 390 480" preserveAspectRatio="xMidYMax meet" style="display:none">
+      <!-- dark background body hint -->
+      <path d="M0 480 L0 360 C0 340 20 325 40 325 L350 325 C370 325 390 340 390 360 L390 480 Z" fill="#0F2D3D" opacity="0.3"/>
+
+      <!-- LEFT HEMISPHERE — large, fills left side -->
+      <path d="M-10 380 C-10 340 0 280 20 230
+               C40 175 70 130 110 100
+               C140 76 175 68 198 70
+               L198 380 Z"
+        fill="#0F2D3D"/>
+      <!-- sulci left -->
+      <path d="M30 230 C60 218 100 224 135 212" fill="none" stroke="#1B8DC8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M18 275 C55 262 100 268 142 255" fill="none" stroke="#1B8DC8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M14 318 C55 305 105 310 148 298" fill="none" stroke="#1B8DC8" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M22 188 C55 175 96 180 128 168" fill="none" stroke="#1B8DC8" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+      <path d="M42 150 C72 138 106 142 130 131" fill="none" stroke="#1B8DC8" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+
+      <!-- LEFT AMYGDALA highlight — orange -->
+      <ellipse cx="90" cy="295" rx="28" ry="20" fill="#E05A20" opacity="0.85"/>
+      <ellipse cx="90" cy="295" rx="14" ry="10" fill="white" opacity="0.35"/>
+
+      <!-- RIGHT HEMISPHERE — fills right side -->
+      <path d="M400 380 C400 340 390 280 370 230
+               C350 175 320 130 280 100
+               C250 76 215 68 192 70
+               L192 380 Z"
+        fill="#0F2D3D"/>
+      <!-- sulci right -->
+      <path d="M360 230 C330 218 290 224 255 212" fill="none" stroke="#1B8DC8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M372 275 C335 262 290 268 248 255" fill="none" stroke="#1B8DC8" stroke-width="3" stroke-linecap="round"/>
+      <path d="M376 318 C335 305 285 310 242 298" fill="none" stroke="#1B8DC8" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M368 188 C335 175 294 180 262 168" fill="none" stroke="#1B8DC8" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+      <path d="M348 150 C318 138 284 142 260 131" fill="none" stroke="#1B8DC8" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+
+      <!-- RIGHT AMYGDALA highlight -->
+      <ellipse cx="300" cy="295" rx="28" ry="20" fill="#E05A20" opacity="0.85"/>
+      <ellipse cx="300" cy="295" rx="14" ry="10" fill="white" opacity="0.35"/>
+
+      <!-- Corpus callosum centre bridge -->
+      <path d="M198 170 C195 160 192 150 192 140 C192 130 195 122 198 118
+               C201 122 204 130 204 140 C204 150 201 160 198 170 Z"
+        fill="white" opacity="0.15"/>
+
+      <!-- BRAINSTEM -->
+      <path d="M178 375 L178 460 C178 468 186 475 195 475 C204 475 212 468 212 460 L212 375 Z"
+        fill="#0F2D3D"/>
+      <path d="M184 375 L184 455 C184 460 189 464 195 464 C201 464 206 460 206 455 L206 375 Z"
+        fill="#E05A20" opacity="0.6"/>
+
+      <!-- gaba stability label -->
+      <rect x="230" y="22" width="145" height="22" rx="4" fill="#0F2D3D" opacity="0.25"/>
+      <text x="302" y="37" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="white" letter-spacing="0.1em" opacity="0.7">GABA STABLE ↓ ANXIETY</text>
+    </svg>
+
+    <!-- INPUTS: gut / large intestine system -->
+    <svg id="svgInputs" viewBox="0 0 390 480" preserveAspectRatio="xMidYMax meet" style="display:none">
+      <!-- ASCENDING COLON — right side, tall -->
+      <path d="M278 480 L278 140 C278 105 298 80 325 82 C355 84 375 112 374 148 L370 480 Z"
+        fill="#0F2D3D"/>
+      <!-- haustra right -->
+      <line x1="280" y1="168" x2="368" y2="165" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="279" y1="196" x2="368" y2="193" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="279" y1="224" x2="368" y2="221" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="252" x2="367" y2="249" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="280" x2="367" y2="277" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="308" x2="367" y2="305" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="336" x2="367" y2="333" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="364" x2="367" y2="361" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="392" x2="368" y2="389" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="420" x2="369" y2="417" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="278" y1="448" x2="370" y2="445" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+
+      <!-- TRANSVERSE COLON — top, full width -->
+      <path d="M10 68 C10 48 24 34 46 32 L344 32 C366 32 380 48 380 68 L380 105 L344 105 C344 88 334 76 320 76 L180 76 C150 76 140 88 140 105 L10 105 Z"
+        fill="#0F2D3D"/>
+      <!-- haustra transverse -->
+      <line x1="80" y1="32" x2="80" y2="105" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="140" y1="32" x2="140" y2="78" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="200" y1="32" x2="200" y2="76" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="260" y1="32" x2="260" y2="78" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="320" y1="32" x2="320" y2="105" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+
+      <!-- DESCENDING COLON — left side, tall -->
+      <path d="M18 480 L18 140 C18 105 -2 80 -30 82 C-60 84 -78 112 -78 148 L-78 480 Z"
+        fill="#0F2D3D"/>
+      <!-- haustra left -->
+      <line x1="16" y1="168" x2="-72" y2="165" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="17" y1="196" x2="-72" y2="193" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="17" y1="224" x2="-72" y2="221" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="18" y1="252" x2="-72" y2="249" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="18" y1="280" x2="-72" y2="277" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="18" y1="308" x2="-72" y2="305" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="18" y1="336" x2="-72" y2="333" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="18" y1="364" x2="-72" y2="361" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+      <line x1="18" y1="392" x2="-72" y2="389" stroke="#1B8DC8" stroke-width="2.5" opacity="0.55"/>
+
+      <!-- SMALL INTESTINE — bold coils, orange fills, centre of frame -->
+      <path d="M138 118 C165 110 215 128 228 160 C242 192 224 218 205 222
+               C185 226 165 212 160 190 C154 165 168 140 188 134
+               C208 128 226 142 230 162 C234 180 220 196 204 200
+               C186 204 168 191 163 174 C158 156 168 138 183 133"
+        fill="none" stroke="#0F2D3D" stroke-width="26" stroke-linecap="round"/>
+      <path d="M138 118 C165 110 215 128 228 160 C242 192 224 218 205 222
+               C185 226 165 212 160 190 C154 165 168 140 188 134
+               C208 128 226 142 230 162 C234 180 220 196 204 200
+               C186 204 168 191 163 174 C158 156 168 138 183 133"
+        fill="none" stroke="#E05A20" stroke-width="18" stroke-linecap="round"/>
+      <path d="M138 118 C165 110 215 128 228 160 C242 192 224 218 205 222
+               C185 226 165 212 160 190 C154 165 168 140 188 134
+               C208 128 226 142 230 162 C234 180 220 196 204 200
+               C186 204 168 191 163 174 C158 156 168 138 183 133"
+        fill="none" stroke="#0F2D3D" stroke-width="3" stroke-linecap="round"/>
+
+      <!-- Microbiome dots -->
+      <circle cx="185" cy="158" r="6" fill="#0F2D3D" opacity="0.7"/>
+      <circle cx="208" cy="172" r="5" fill="#0F2D3D" opacity="0.6"/>
+      <circle cx="174" cy="178" r="4" fill="#0F2D3D" opacity="0.65"/>
+      <circle cx="215" cy="152" r="4" fill="#0F2D3D" opacity="0.55"/>
+
+      <!-- STOMACH — top left -->
+      <path d="M22 36 C18 12 36 -8 62 -4 C88 0 102 24 96 52
+               C90 78 70 92 48 86 C28 80 26 60 22 36Z"
+        fill="#0F2D3D"/>
+      <path d="M30 38 C27 20 40 8 58 12 C76 16 84 34 80 54
+               C76 72 62 80 46 76 C32 72 32 56 30 38Z"
+        fill="#E05A20"/>
+
+      <!-- estrobolome label -->
+      <rect x="100" y="228" width="168" height="22" rx="4" fill="#0F2D3D" opacity="0.3"/>
+      <text x="184" y="243" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="white" letter-spacing="0.1em" opacity="0.8">ESTROBOLOME ACTIVE</text>
+    </svg>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-btn" onclick="setNav(0)">Home</div>
+    <div class="nav-btn active" onclick="setNav(1)">Body</div>
+    <div class="nav-btn" onclick="setNav(2)">Talk</div>
+    <div class="nav-btn" onclick="setNav(3)">Log</div>
+  </div>
+
+</div>
+
+<script>
+const ALL_SVG = ['svgHormonal', 'svgPhysical', 'svgEmotional', 'svgInputs'];
+
+const CONTENT = [
+  {
+    fact: '<strong>80% of serotonin receptors</strong> in the brain are directly upregulated by estrogen — accounting for the mood lift in follicular phase.',
+  },
+  {
+    fact: 'Estrogen acts as a <strong>vasodilator and bone protector</strong>. HRV peaks in follicular phase. Joint cartilage is more resilient when E2 is high.',
+  },
+  {
+    fact: 'Estrogen reduces <strong>amygdala reactivity</strong> to threat signals. GABA is stable. Your nervous system runs parasympathetic — calm, connected.',
+  },
+  {
+    fact: 'Your gut\'s <strong>estrobolome</strong> — the bacteria that metabolise estrogen — directly shapes your hormonal balance. One bad night of sleep is enough to disrupt it.',
+  },
+];
+
+function setLayer(idx) {
+  document.querySelectorAll('.tab-pill').forEach((t, i) => t.classList.toggle('active', i === idx));
+  ALL_SVG.forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById(ALL_SVG[idx]).style.display = 'block';
+  document.getElementById('factCopy').innerHTML = CONTENT[idx].fact;
+}
+
+function setNav(idx) {
+  document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  if (idx === 1) setLayer(0);
+}
+</script>
+</body>
+</html>
